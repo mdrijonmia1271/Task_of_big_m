@@ -19,11 +19,7 @@ return new class extends Migration
             $table->integer('district_id');
             $table->integer('upazila_id');
             $table->longText('address');
-            $table->string('language');
-            $table->string('exam_name');
-            $table->string('university');
-            $table->string('board');
-            $table->string('result');
+            $table->string('language')->nullable();
             $table->string('photo')->default('default.png');
             $table->string('cv_attachment');
             $table->string('traning_name')->nullable();

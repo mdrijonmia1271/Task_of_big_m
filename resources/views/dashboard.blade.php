@@ -25,7 +25,7 @@
                                 </ul>
                             </div>
                         @endif --}}
-                        <form action="{{ url('registration/post') }}" method="post" id="quickForm"
+                        <form id="quickForm"
                             enctype="multipart/form-data">
                             @csrf
                             <div class="row">
@@ -83,12 +83,12 @@
                                 </div>
                                 <div class="col-12">
                                     <label for="">Language Proficiency :</label><br>
-                                    <input type="checkbox" name="language" value="bangla">
-                                    <label for="">Bangla</label><br>
+                                    <input type="checkbox" id="" name="language" value="bangla">
+                                    <label for="language">Bangla</label><br>
                                     <input type="checkbox" name="language" value="english">
-                                    <label for="">English</label><br>
+                                    <label for="language">English</label><br>
                                     <input type="checkbox" name="language" value="french">
-                                    <label for="">French</label><br>
+                                    <label for="language">French</label><br>
                                 </div>
                                 <table id="table" class="table table-striped table-bordered">
                                     <label for="">Education Qualification</label>
@@ -104,7 +104,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                @error('exam_id')
+                                                @error('exam_id[]')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                                 <select id="exam_name" name="exam_id[]" class="form-control">
@@ -121,6 +121,10 @@
                                                 @enderror
                                                 <select id="university" name="university_id[]" class="form-control">
                                                     <option value="">Select Option</option>
+                                                    @foreach ($universities as $universitie)
+                                                        <option value="{{ $universitie->id }}">
+                                                            {{ $universitie->university_name }}</option>
+                                                    @endforeach
                                             </td>
                                             <td>
                                                 @error('board_id')
@@ -128,6 +132,10 @@
                                                 @enderror
                                                 <select id="board" name="board_id[]" class="form-control">
                                                     <option value="">Select Option</option>
+                                                    @foreach ($all_boards as $board)
+                                                        <option value="{{ $board->id }}">
+                                                            {{ $board->board_name }}</option>
+                                                    @endforeach
                                                 </select>
                                             </td>
                                             <td>
@@ -232,12 +240,28 @@
 @endsection
 @section('footer_scripts')
     <script>
+        jQuery('#quickForm').submit(function(e){
+            console.log('submit form')
+            e.preventDefault();
+            var formData = new FormData(this);
+            jQuery.ajax({
+                url:"submit-form",
+                // data:jQuery('#quickForm').serialize(),
+                data:formData,
+                type:'POST',
+                processData: false, // Set processData to false
+                contentType: false, // Set contentType to false
+                success:function(result){
+                    console.log(result);
+                    toastr.success(result.success);
+                }
+            });
+        });
         function addInputFunc(){
-            console.log("Click");
              $('#table').append(
                 `<tr>
                     <td>
-                        <select onchange="addExam(this.value)" id="exam_name_2" name="exam_id[]" class="form-control">
+                        <select id="exam_name_2" name="exam_id[]" class="form-control">
                              <option value="">Select Option</option>
                                 @foreach ($exam_names as $exam_name)
                                     <option value="{{ $exam_name->id }}">
@@ -246,13 +270,21 @@
                         </select>
                     </td>
                     <td>
-                         <select class="university_2" name="university_id[]" class="form-control">
+                         <select id="university_2" name="university_id[]" class="form-control">
                             <option value="">Select Option</option>
+                                @foreach ($universities as $universitie)
+                                    <option value="{{ $universitie->id }}">
+                                        {{ $universitie->university_name }}</option>
+                                @endforeach
                         </select>
                     </td>
                     <td>
-                        <select class="board_name_2" name="board_id[]" class="form-control">
+                        <select id="board_name_2" name="board_id[]" class="form-control">
                             <option value="">Select Option</option>
+                                @foreach ($all_boards as $board)
+                                    <option value="{{ $board->id }}">
+                                        {{ $board->board_name }}</option>
+                                @endforeach
                          </select>
                     </td>
                     <td>
@@ -268,29 +300,29 @@
             $(this).parents('tr').remove();
         });
 
-        function addExam(val){
-                var exam_id = val;
+        // function addExam(val){
+        //         var exam_id = val;
 
-                //ajax setup
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                //ajax response start
-                $.ajax({
-                    type: 'POST',
-                    url: '/get/exam_name/list/ajax',
-                    data: {
-                        exam_id: exam_id
-                    },
-                    success: function(data) {
-                        $('.university_2').html(data.university);
-                        $('.board_name_2').html(data.board );
-                    }
-                });
+        //         //ajax setup
+        //         $.ajaxSetup({
+        //             headers: {
+        //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //             }
+        //         });
+        //         //ajax response start
+        //         $.ajax({
+        //             type: 'POST',
+        //             url: '/get/exam_name/list/ajax',
+        //             data: {
+        //                 exam_id: exam_id
+        //             },
+        //             success: function(data) {
+        //                 // $('.university_2').html(data.university);
+        //                 // $('.board_name_2').html(data.board );
+        //             }
+        //         });
 
-            }
+        //     }
 
         $(document).ready(function() {
             // $('#division').select2();
@@ -338,28 +370,29 @@
                     }
                 });
             })
-            $('#exam_name').change(function() {
-                // console.log("exam_name");
-                var exam_id = $(this).val();
-                //ajax setup
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                //ajax response start
-                $.ajax({
-                    type: 'POST',
-                    url: '/get/exam_name/list/ajax',
-                    data: {
-                        exam_id: exam_id
-                    },
-                    success: function(data) {
-                        $('#university').html(data.university);
-                        $('#board').html(data.board);
-                    }
-                });
-            })
+
+            // $('#exam_name').change(function() {
+            //     // console.log("exam_name");
+            //     var exam_id = $(this).val();
+            //     //ajax setup
+            //     $.ajaxSetup({
+            //         headers: {
+            //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //         }
+            //     });
+            //     //ajax response start
+            //     $.ajax({
+            //         type: 'POST',
+            //         url: '/get/exam_name/list/ajax',
+            //         data: {
+            //             exam_id: exam_id
+            //         },
+            //         success: function(data) {
+            //             // $('#university').html(data.university);
+            //             // $('#board').html(data.board);
+            //         }
+            //     });
+            // })
             
            
         });
@@ -370,23 +403,41 @@
             //         $('#quickForm').submit();
             //     }
             // });
-            $('#quickFor').validate({
+            $('#quickForm').validate({
                 rules: {
                     name: {
                         required: true,
                     },
-                    content: {
+                    email: {
+                        required: true,
+                    },
+                    division_id: {
+                        required: true,
+                    },
+                    district_id: {
+                        required: true,
+                    },
+                    upazila_id: {
+                        required: true,
+                    },
+                    address: {
+                        required: true,
+                    },
+                    photo: {
+                        required: true,
+                    },
+                    cv_attachemnt: {
                         required: true,
                     },
                 },
-                messages: {
-                    name: {
-                        required: "Please enter a title",
-                    },
-                    content: {
-                        required: "Please enter a content",
-                    },
-                },
+                // messages: {
+                //     name: {
+                //         required: "Please enter a title",
+                //     },
+                //     content: {
+                //         required: "Please enter a content",
+                //     },
+                // },
                 errorElement: 'span',
                 errorPlacement: function(error, element) {
                     error.addClass('invalid-feedback');

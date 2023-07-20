@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('educational_qualifications', function (Blueprint $table) {
             $table->id();
             $table->string('registration_id');
-            $table->string('exam_id');
-            $table->string('university_id');
-            $table->string('board_id');
-            $table->string('result');
+            $table->string('exam_id')->nullable();
+            $table->string('university_id')->nullable();
+            $table->string('board_id')->nullable();
+            $table->string('result')->nullable();
             $table->timestamps();
         });
     }

@@ -26,7 +26,8 @@ Route::get('/', [HomeController::class, 'deshboard'])->name('deshboard');
 Route::post('/get/district/list/ajax', [HomeController::class, 'getDistrictListAjax']);
 Route::post('/get/upazila/list/ajax', [HomeController::class, 'getUpazilatListAjax']);
 Route::post('/get/exam_name/list/ajax', [HomeController::class, 'getExamNameListAjax']);
-Route::post('/registration/post', [HomeController::class, 'studentRegistration']);
+Route::post('/submit-form', [HomeController::class, 'formSubmit']);
+// Route::post('/registration/post', [HomeController::class, 'studentRegistration']);
 
 
 
