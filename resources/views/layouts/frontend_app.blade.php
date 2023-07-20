@@ -32,6 +32,14 @@
     <link rel="stylesheet" href="{{ asset('frontend') }}/css/styles.css">
     <!-- responsive css -->
     <link rel="stylesheet" href="{{ asset('frontend') }}/css/responsive.css">
+
+
+    <link rel="stylesheet" href="{{ asset('vendor/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/plugins/summernote/summernote-bs4.min.css') }}">
+
+
     {{-- Select to cdn --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- modernizr css -->
@@ -225,6 +233,8 @@
     <script src="{{ asset('frontend') }}/js/scripts.js"></script>
     {{-- Select to cdn --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ asset('vendor/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('vendor/plugins/jquery-validation/jquery.validate.js') }}"></script>
     @yield('footer_scripts')
 </body>
 
