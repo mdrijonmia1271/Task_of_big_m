@@ -12,21 +12,7 @@
                 <div class="col-lg-8">
                     <div class="checkout-form form-style">
                         <h3 style="text-align: center">Registration Form</h3>
-                        {{-- {{ print_r($errors->all()) }} --}}
-                        {{-- @if (count($errors) > 0)
-                            <div class="alert alert-default-danger alert-dismissible fade show" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                <ul class="p-0 m-0" style="list-style: none;">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{$error}}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif --}}
-                        <form id="quickForm"
-                            enctype="multipart/form-data">
+                        <form id="quickForm" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-12">
@@ -83,12 +69,12 @@
                                 </div>
                                 <div class="col-12">
                                     <label for="">Language Proficiency :</label><br>
-                                    <input type="checkbox" id="" name="language" value="bangla">
-                                    <label for="language">Bangla</label><br>
-                                    <input type="checkbox" name="language" value="english">
-                                    <label for="language">English</label><br>
-                                    <input type="checkbox" name="language" value="french">
-                                    <label for="language">French</label><br>
+                                    <input type="checkbox" id="" name="language[]" value="bangla">
+                                    <label for="">Bangla</label><br>
+                                    <input type="checkbox" name="language[]" value="english">
+                                    <label for="">English</label><br>
+                                    <input type="checkbox" name="language[]" value="french">
+                                    <label for="">French</label><br>
                                 </div>
                                 <table id="table" class="table table-striped table-bordered">
                                     <label for="">Education Qualification</label>
@@ -148,33 +134,6 @@
                                                 <button type="button" name="add" id="add" onclick="addInputFunc()" class="btn btn-primary">Add More</button>
                                             </td>
                                         </tr>
-                                        {{-- <tr>
-                                            <td>
-                                                <select id="exam_name_2" name="exam_id_2" class="form-control">
-                                                    <option value="">Select Option</option>
-                                                    @foreach ($exam_names as $exam_name)
-                                                        <option value="{{ $exam_name->id }}">
-                                                            {{ $exam_name->exam_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <select id="university_2" name="university_id_2" class="form-control">
-                                                    <option value="">Select Option</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <select id="board_name_2" name="board_id_2" class="form-control">
-                                                    <option value="">Select Option</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <input type="text" name="result_2" class="form-control" placeholder="CGPA">
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-danger">Delete</button>
-                                            </td>
-                                        </tr> --}}
                                     </tbody>
                                 </table>
                                 <div class="mb-3 col-md-12">
@@ -202,7 +161,7 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="row" id="open2">
-                                        <table class="table table-striped table-bordered">
+                                        <table id="traning_table" class="table table-striped table-bordered">
                                             <thead style="background-color: rgb(182, 198, 241); padding-top:50px">
                                                 <tr>
                                                     <th class="het" scope="col">Traning Name</th>
@@ -212,14 +171,9 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td><input type="text" name="" class="form-control" placeholder="Enter traning name"></td>
-                                                    <td><input type="text" name="" class="form-control" placeholder="Enter traning details"></td>
-                                                    <td><button type="button" class="btn btn-danger">Delete</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="text" name="" class="form-control" placeholder="Enter traning name"></td>
-                                                    <td><input type="text" name="" class="form-control" placeholder="Enter traning details"></td>
-                                                    <td><button type="button" class="btn btn-danger">Delete</button></td>
+                                                    <td><input type="text" name="traning_name[]" class="form-control" placeholder="Enter traning name"></td>
+                                                    <td><input type="text" name="traning_details[]" class="form-control" placeholder="Enter traning details"></td>
+                                                    <td><button type="button" onclick="addTraningInput()" class="btn btn-primary">Add More</button></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -241,7 +195,7 @@
 @section('footer_scripts')
     <script>
         jQuery('#quickForm').submit(function(e){
-            console.log('submit form')
+            console.log('submit form');
             e.preventDefault();
             var formData = new FormData(this);
             jQuery.ajax({
@@ -252,7 +206,6 @@
                 processData: false, // Set processData to false
                 contentType: false, // Set contentType to false
                 success:function(result){
-                    console.log(result);
                     toastr.success(result.success);
                 }
             });
@@ -300,29 +253,18 @@
             $(this).parents('tr').remove();
         });
 
-        // function addExam(val){
-        //         var exam_id = val;
-
-        //         //ajax setup
-        //         $.ajaxSetup({
-        //             headers: {
-        //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //             }
-        //         });
-        //         //ajax response start
-        //         $.ajax({
-        //             type: 'POST',
-        //             url: '/get/exam_name/list/ajax',
-        //             data: {
-        //                 exam_id: exam_id
-        //             },
-        //             success: function(data) {
-        //                 // $('.university_2').html(data.university);
-        //                 // $('.board_name_2').html(data.board );
-        //             }
-        //         });
-
-        //     }
+        function addTraningInput(){
+            $('#traning_table').append(
+                `<tr>
+                    <td><input type="text" name="traning_name[]" class="form-control" placeholder="Enter traning name"></td>
+                    <td><input type="text" name="traning_details[]" class="form-control" placeholder="Enter traning details"></td>
+                    <td><button type="button" class="btn btn-danger delete_table_row">Delete</button></td>
+                <tr>`
+            );
+        }
+        $(document).on('click', '.delete_table_row', function() {
+            $(this).parents('tr').remove();
+        });
 
         $(document).ready(function() {
             // $('#division').select2();
@@ -370,31 +312,6 @@
                     }
                 });
             })
-
-            // $('#exam_name').change(function() {
-            //     // console.log("exam_name");
-            //     var exam_id = $(this).val();
-            //     //ajax setup
-            //     $.ajaxSetup({
-            //         headers: {
-            //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //         }
-            //     });
-            //     //ajax response start
-            //     $.ajax({
-            //         type: 'POST',
-            //         url: '/get/exam_name/list/ajax',
-            //         data: {
-            //             exam_id: exam_id
-            //         },
-            //         success: function(data) {
-            //             // $('#university').html(data.university);
-            //             // $('#board').html(data.board);
-            //         }
-            //     });
-            // })
-            
-           
         });
 
         $(document).ready(function() {
@@ -430,14 +347,6 @@
                         required: true,
                     },
                 },
-                // messages: {
-                //     name: {
-                //         required: "Please enter a title",
-                //     },
-                //     content: {
-                //         required: "Please enter a content",
-                //     },
-                // },
                 errorElement: 'span',
                 errorPlacement: function(error, element) {
                     error.addClass('invalid-feedback');

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,12 +22,15 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/', [HomeController::class, 'deshboard'])->name('deshboard');
+Route::get('/get/regi_data/{id}', [HomeController::class, 'edit']);
+Route::put('/update/regi_data/{id}', [HomeController::class, 'update']);
 
-Route::post('/get/district/list/ajax', [HomeController::class, 'getDistrictListAjax']);
-Route::post('/get/upazila/list/ajax', [HomeController::class, 'getUpazilatListAjax']);
-Route::post('/get/exam_name/list/ajax', [HomeController::class, 'getExamNameListAjax']);
-Route::post('/submit-form', [HomeController::class, 'formSubmit']);
+
+
+Route::get('/', [DashboardController::class, 'deshboard'])->name('deshboard');
+Route::post('/get/district/list/ajax', [DashboardController::class, 'getDistrictListAjax']);
+Route::post('/get/upazila/list/ajax', [DashboardController::class, 'getUpazilatListAjax']);
+Route::post('/submit-form', [DashboardController::class, 'formSubmit']);
 // Route::post('/registration/post', [HomeController::class, 'studentRegistration']);
 
 
