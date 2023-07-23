@@ -1,8 +1,5 @@
 @extends('layouts/frontend_app')
 
-{{-- @section('title')
-    Deshboard Page
-@endsection  --}}
 
 @section('frontend_content')
     <!-- checkout-area start -->
@@ -64,16 +61,15 @@
                                     @error('address')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-                                    {{-- <input type="text" name="address" class="form-control" placeholder="Enter details address" value="{{ old('address') }}"> --}}
                                     <textarea name="address" id="" class="form-control" cols="30" rows="10"></textarea><br>
                                 </div>
                                 <div class="col-12">
                                     <label for="">Language Proficiency :</label><br>
-                                    <input type="checkbox" id="" name="language[]" value="bangla">
+                                    <input type="checkbox" id="" name="language[]" value="Bangla">
                                     <label for="">Bangla</label><br>
-                                    <input type="checkbox" name="language[]" value="english">
+                                    <input type="checkbox" name="language[]" value="English">
                                     <label for="">English</label><br>
-                                    <input type="checkbox" name="language[]" value="french">
+                                    <input type="checkbox" name="language[]" value="French">
                                     <label for="">French</label><br>
                                 </div>
                                 <table id="table" class="table table-striped table-bordered">
@@ -179,7 +175,6 @@
                                         </table>
                                     </div>
                                 </div>
-
                             </div>
                             <div style="text-align: right">
                                 <button type="submit" class="btn btn-success">Submit</button>
@@ -200,7 +195,6 @@
             var formData = new FormData(this);
             jQuery.ajax({
                 url:"submit-form",
-                // data:jQuery('#quickForm').serialize(),
                 data:formData,
                 type:'POST',
                 processData: false, // Set processData to false
@@ -267,8 +261,8 @@
         });
 
         $(document).ready(function() {
-            // $('#division').select2();
-            // $('#district').select2();
+            // $('#university').select2();
+            // $('#university_2').select2();
             // $('#upazila').select2();
             $('#division').change(function() {
                 var division_id = $(this).val();
@@ -315,11 +309,6 @@
         });
 
         $(document).ready(function() {
-            // $.validator.setDefaults({
-            //     submitHandler: function () {
-            //         $('#quickForm').submit();
-            //     }
-            // });
             $('#quickForm').validate({
                 rules: {
                     name: {

@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    
     public function deshboard()
     {
         return view('dashboard',[
@@ -31,6 +32,7 @@ class DashboardController extends Controller
     {
         $stringToSend = "";
         $districts = District::where('division_id', $request->division_id)->get();
+        $stringToSend .= "<option value=''>Select Option</option>";
         foreach($districts as $district){
             $stringToSend .= "<option value='".$district->id."'>".$district->name."</option>";
         }
@@ -41,6 +43,7 @@ class DashboardController extends Controller
 
         $stringToSend = "";
         $upazilas = Upazila::where('district_id', $request->district_id)->get();
+        $stringToSend .= "<option value=''>Select Option</option>";
         foreach($upazilas as $upazila){
             $stringToSend .= "<option value='".$upazila->id."'>".$upazila->name."</option>";
         }
