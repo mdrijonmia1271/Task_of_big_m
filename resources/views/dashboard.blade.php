@@ -280,7 +280,7 @@
                         division_id: division_id
                     },
                     success: function(data) {
-                        // alert(data);
+                        console.log(data);
                         $('#district').html(data);
 
                     }
