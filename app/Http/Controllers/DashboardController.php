@@ -74,8 +74,8 @@ class DashboardController extends Controller
         if ($request->hasFile('cv_attachemnt')) {
             $uploaded_photo = $request->file('cv_attachemnt');
             $new_upload_name = $registration_id . "." . $uploaded_photo->getClientOriginalExtension();
-            $new_upload_location = 'public/uploads/pdf' . $new_upload_name;
-            $request->file('cv_attachemnt')->storeAs('public/cv_attachment',$new_upload_name);
+            $new_upload_location = 'uploads/pdf';
+            $request->file('cv_attachemnt')->move($new_upload_location, $new_upload_name);
             Registration::where('id',$registration_id)->update([
                 'cv_attachment' => $new_upload_name,
             ]);

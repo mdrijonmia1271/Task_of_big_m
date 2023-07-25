@@ -5,7 +5,7 @@
     <div class="checkout-area ptb-100">
         <div class="container">
             <div class="row">
-                <iframe height="1400" width="1600" src="{{ asset('storage/cv_attachment') }}/{{ $data->cv_attachment }}" frameborder="0"></iframe>
+                <iframe height="1400" width="1600" src="{{ asset('uploads/pdf') }}/{{ $data->cv_attachment }}" frameborder="0"></iframe>
             </div>
         </div>
     </div>

@@ -138,7 +138,7 @@ class HomeController extends Controller
     }
     public function download($file)
     {
-        return response()->download(public_path('storage/cv_attachment/'.$file));
+        return response()->download(public_path('uploads/pdf/'.$file));
     }
 
     
