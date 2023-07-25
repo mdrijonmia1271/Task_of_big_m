@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('upazila_id');
             $table->longText('address');
             $table->string('photo')->default('default.png');
-            $table->string('cv_attachment');
+            $table->string('cv_attachment')->nullable();
             $table->timestamps();
         });
     }
