@@ -16,5 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call(DivisionsSeeder::class);
         $this->call(DistrictsSeeder::class);
         $this->call(UpazilasSeeder::class);
+        $this->call(ExamNamesSeeder::class);
+        $this->call(UniversitiesSeeder::class);
+        $this->call(BoardsSeeder::class);
     }
 }
