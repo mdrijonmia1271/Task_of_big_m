@@ -44,10 +44,10 @@
                             <tbody>
                                 @forelse($edu_qualifications as $edu_qualifications)
                                     <tr>
-                                        <td>{{ $edu_qualifications->RelationWithExam->exam_name }}</td>
-                                        <td>{{ $edu_qualifications->RelationWithVersity->university_name }}</td>
-                                        <td>{{ $edu_qualifications->RelationWithBoard->board_name }}</td>
-                                        <td>{{ $edu_qualifications->result }}</td>
+                                        <td>{{ @$edu_qualifications->RelationWithExam->exam_name }}</td>
+                                        <td>{{ @$edu_qualifications->RelationWithVersity->university_name }}</td>
+                                        <td>{{ @$edu_qualifications->RelationWithBoard->board_name }}</td>
+                                        <td>{{ @$edu_qualifications->result }}</td>
                                     </tr>
                                 @empty
                                 <tr>

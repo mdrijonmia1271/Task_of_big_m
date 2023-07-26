@@ -7,6 +7,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
+                    <ul id="ErrorList"></ul>
                     <div class="checkout-form form-style">
                         <h3 style="text-align: center">Registration Form</h3>
                         <form id="quickForm" enctype="multipart/form-data">
@@ -17,14 +18,16 @@
                                     @error('name')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-                                    <input type="text" name="name" id="name" class="form-control" placeholder="Enter your name" value="{{ old('name') }}">
+                                    <input type="text" name="name" id="name" class="form-control"
+                                        placeholder="Enter your name" value="{{ old('name') }}">
                                 </div>
                                 <div class="col-12">
                                     <p>Email Address</p>
                                     @error('email')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-                                    <input type="email" name="email" class="form-control" placeholder="Enter your email address" value="{{ old('email') }}"> 
+                                    <input type="email" name="email" class="form-control"
+                                        placeholder="Enter your email address" value="{{ old('email') }}">
                                 </div>
                                 <div class="col-sm-4 col-12">
                                     <p>Division</p>
@@ -124,10 +127,12 @@
                                                 @error('result')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
-                                                <input type="text" name="result[]" class="form-control" placeholder="CGPA">
+                                                <input type="text" name="result[]" class="form-control"
+                                                    placeholder="CGPA">
                                             </td>
                                             <td>
-                                                <button type="button" name="add" id="add" onclick="addInputFunc()" class="btn btn-primary">Add More</button>
+                                                <button type="button" name="add" id="add"
+                                                    onclick="addInputFunc()" class="btn btn-primary">Add More</button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -140,6 +145,7 @@
                                     <input type="file" name="photo" class="form-control">
                                 </div>
                                 <div class="mb-3 col-md-12">
+                                    <ul id="addError"></ul>
                                     <label class="mb-2">CV Attachment</label><br>
                                     @error('cv_attachemnt')
                                         <span class="text-danger">{{ $message }}</span>
@@ -167,9 +173,12 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td><input type="text" name="traning_name[]" class="form-control" placeholder="Enter traning name"></td>
-                                                    <td><input type="text" name="traning_details[]" class="form-control" placeholder="Enter traning details"></td>
-                                                    <td><button type="button" onclick="addTraningInput()" class="btn btn-primary">Add More</button></td>
+                                                    <td><input type="text" name="traning_name[]" class="form-control"
+                                                            placeholder="Enter traning name"></td>
+                                                    <td><input type="text" name="traning_details[]"
+                                                            class="form-control" placeholder="Enter traning details"></td>
+                                                    <td><button type="button" onclick="addTraningInput()"
+                                                            class="btn btn-primary">Add More</button></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -189,23 +198,33 @@
 @endsection
 @section('footer_scripts')
     <script>
-        jQuery('#quickForm').submit(function(e){
-            console.log('submit form');
+        jQuery('#quickForm').submit(function(e) {
+            // console.log('submit form');
             e.preventDefault();
             var formData = new FormData(this);
             jQuery.ajax({
-                url:"submit-form",
-                data:formData,
-                type:'POST',
+                url: "submit-form",
+                data: formData,
+                type: 'POST',
                 processData: false, // Set processData to false
                 contentType: false, // Set contentType to false
-                success:function(result){
-                    toastr.success(result.success);
+                success: function(result) {
+                    if (result.status == 400) {
+                        $('#ErrorList').html("");
+                        $('#ErrorList').addClass('alert alert-danger');
+                        $.each(result.errors, function(key, arr_values) {
+                            $('#ErrorList').append('<li>' + arr_values + '<li>');
+                                toastr.error(arr_values);
+                        });
+                    }else{
+                        toastr.success(result.success);
+                    }  
                 }
             });
         });
-        function addInputFunc(){
-             $('#table').append(
+
+        function addInputFunc() {
+            $('#table').append(
                 `<tr>
                     <td>
                         <select id="exam_name_2" name="exam_id[]" class="form-control">
@@ -247,7 +266,7 @@
             $(this).parents('tr').remove();
         });
 
-        function addTraningInput(){
+        function addTraningInput() {
             $('#traning_table').append(
                 `<tr>
                     <td><input type="text" name="traning_name[]" class="form-control" placeholder="Enter traning name"></td>

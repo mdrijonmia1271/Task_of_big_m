@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StudentRegistration;
 use App\Models\Board;
 use App\Models\District;
 use App\Models\Division;
@@ -15,13 +16,14 @@ use App\Models\Upazila;
 use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DashboardController extends Controller
 {
-    
+
     public function deshboard()
     {
-        return view('dashboard',[
+        return view('dashboard', [
             'divisions' => Division::all(),
             'exam_names' => Examination_name::all(),
             'universities' => University::all(),
@@ -33,8 +35,8 @@ class DashboardController extends Controller
         $stringToSend = "";
         $districts = District::where('division_id', $request->division_id)->get();
         $stringToSend .= "<option value=''>Select Option</option>";
-        foreach($districts as $district){
-            $stringToSend .= "<option value='".$district->id."'>".$district->name."</option>";
+        foreach ($districts as $district) {
+            $stringToSend .= "<option value='" . $district->id . "'>" . $district->name . "</option>";
         }
         return $stringToSend;
     }
@@ -44,14 +46,32 @@ class DashboardController extends Controller
         $stringToSend = "";
         $upazilas = Upazila::where('district_id', $request->district_id)->get();
         $stringToSend .= "<option value=''>Select Option</option>";
-        foreach($upazilas as $upazila){
-            $stringToSend .= "<option value='".$upazila->id."'>".$upazila->name."</option>";
+        foreach ($upazilas as $upazila) {
+            $stringToSend .= "<option value='" . $upazila->id . "'>" . $upazila->name . "</option>";
         }
         return $stringToSend;
     }
-     public function formSubmit(Request $request)
-     {
+    public function formSubmit(Request $request)
+    {
         // dd($request);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'email' => 'required',
+                'division_id' => 'required',
+                'district_id' => 'required',
+                'upazila_id' => 'required',
+                'address' => 'required',
+                'photo' => 'required|image|mimes:jpeg,png',
+                'cv_attachemnt' => 'required|mimes:pdf',
+            ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->messages(),
+            ]);
+        }
         $registration_id = Registration::insertGetId([
             'name' => $request->name,
             'email' => $request->email,
@@ -76,28 +96,28 @@ class DashboardController extends Controller
             $new_upload_name = $registration_id . "." . $uploaded_photo->getClientOriginalExtension();
             $new_upload_location = 'uploads/pdf';
             $request->file('cv_attachemnt')->move($new_upload_location, $new_upload_name);
-            Registration::where('id',$registration_id)->update([
+            Registration::where('id', $registration_id)->update([
                 'cv_attachment' => $new_upload_name,
             ]);
         }
 
-        foreach($request->exam_id as $key => $value){
+        foreach ($request->exam_id as $key => $value) {
             $education_qualification = new Educational_qualification();
-            $education_qualification->registration_id =  $registration_id;
-            $education_qualification->exam_id =  $request->exam_id[$key];
-            $education_qualification->university_id =  $request->university_id[$key];
-            $education_qualification->board_id =  $request->board_id[$key];
-            $education_qualification->result =  $request->result[$key];
+            $education_qualification->registration_id = $registration_id;
+            $education_qualification->exam_id = $request->exam_id[$key];
+            $education_qualification->university_id = $request->university_id[$key];
+            $education_qualification->board_id = $request->board_id[$key];
+            $education_qualification->result = $request->result[$key];
             $education_qualification->save();
         }
-        foreach($request->traning_name as $key => $value){
+        foreach ($request->traning_name as $key => $value) {
             $traning = new Traning();
             $traning->registration_id = $registration_id;
             $traning->traning_name = $request->traning_name[$key];
             $traning->traning_details = $request->traning_details[$key];
             $traning->save();
         }
-        foreach($request->language as $key => $value){
+        foreach ($request->language as $key => $value) {
             $languages = new Language();
             $languages->registration_id = $registration_id;
             $languages->language = $request->language[$key];
@@ -107,5 +127,5 @@ class DashboardController extends Controller
         return response()->json([
             'success' => 'Form Submitted Successfully done!.'
         ]);
-     }
+    }
 }

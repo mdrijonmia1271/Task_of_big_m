@@ -206,20 +206,17 @@
                 data: data,
                 dataType: 'json',
                 success: function(data) {
-                    // toastr.success(data.success);
-                    // console.log(data);
                     if (data.status == 400) {
-                        $('#updateErrorList').html("");
+                        // $('#updateErrorList').html("");
                         $('#updateErrorList').addClass('alert alert-danger');
                         $.each(data.errors, function(key, arr_values) {
                             $('#updateErrorList').append('<li>' + arr_values + '<li>');
                         });
                     } else {
-                        $('#updateErrorList').html("");
+                        // $('#updateErrorList').html("");
                         $('#editDataModal').modal('hide');
                     }
                     if (data.status == 200) {
-                        $('#editedData').html("");
                         $('#editedData').addClass('alert alert-success');
                         $('#editedData').append('<li>' + data.success + '<li>');
                     }

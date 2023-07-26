@@ -31,7 +31,7 @@ class StudentRegistration extends FormRequest
             'exam_id' => 'required',
             'university_id' => 'required',
             'board_id' => 'required',
-            // 'result' => 'required',
+            'result' => 'required',
             'photo' => 'required|image|mimes:jpeg,png',
             'cv_attachemnt' => 'required|mimes:pdf',
         ];
