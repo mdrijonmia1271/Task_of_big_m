@@ -15,4 +15,5 @@
 * 8 - Run `php artisan db:seed`
 * 9 - Run `php artisan serve`
 * 10 - Run `npm install && npm run dev`
+* 11 - Go to http://localhost:8000/
 
